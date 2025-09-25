@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Analysis Result</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>🧾 Analysis Result</h1>
+        <p><strong>Original Text:</strong></p>
+        <div class="text-box">{{ news_text }}</div>
+
+        
+
+        <p><strong>Explanation:</strong></p>
+        <div class="text-box">{{ explanation }}</div>
+
+        <a href="/" class="back-button">🔙 Analyze Another Article</a>
+    </div>
+</body>
+</html>
+s
