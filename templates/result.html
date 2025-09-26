@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block title %}Analysis Result{% endblock %}
+{% block content %}
+  <h1>🧾 AI Analysis Result</h1>
+
+  <div>
+    <p><strong>Original Text:</strong></p>
+    <div class="text-box">{{ news_text }}</div>
+  </div>
+
+  <div style="margin: 25px 0; padding: 15px; background: rgba(0,0,0,0.1); border-radius: 10px;">
+    <p><strong>AI Prediction:</strong> 
+      <span style="color: {% if prediction == 'Real News' %}#4caf50{% else %}#ff5252{% endif %}; font-weight: bold; font-size: 1.2rem;">
+        {{ prediction }}
+      </span> 
+      (Confidence: {{ "%.0f"|format(probability * 100) }}%)
+    </p>
+  </div>
+
+  <div>
+    <p><strong>Explanation:</strong></p>
+    <div class="explanation-box" id="explanation-text">{{ explanation }}</div>
+    <button class="copy-btn" onclick="copyExplanation()">📋 Copy Explanation</button>
+  </div>
+
+  <a href="/" class="back-button" style="margin-top: 30px; display: inline-block;">🔙 Analyze Another Article</a>
+
+  <script>
+    function copyExplanation() {
+      const text = document.getElementById('explanation-text').innerText;
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(text).then(() => {
+          alert("✅ Copied!");
+        }).catch(() => {
+          fallbackCopy(text);
+        });
+      } else {
+        fallbackCopy(text);
+      }
+    }
+
+    function fallbackCopy(text) {
+      const textarea = document.createElement('textarea');
+      textarea.value = text;
+      textarea.style.position = 'fixed';
+      document.body.appendChild(textarea);
+      textarea.select();
+      try {
+        document.execCommand('copy');
+        alert("✅ Copied!");
+      } catch (err) {
+        alert("❌ Manual copy required.");
+      }
+      document.body.removeChild(textarea);
+    }
+
+    // Fade-in animation
+    document.addEventListener("DOMContentLoaded", () => {
+      const boxes = document.querySelectorAll('.text-box, .explanation-box');
+      boxes.forEach((box, i) => {
+        box.style.opacity = '0';
+        box.style.transform = 'translateY(20px)';
+        box.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+        setTimeout(() => {
+          box.style.opacity = '1';
+          box.style.transform = 'translateY(0)';
+        }, 150 * i);
+      });
+    });
+  </script>
+{% endblock %}

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>{% block title %}{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar">
+    <h2>History</h2>
+    {% if session.history %}
+      <ul class="history-list">
+        {% for item in session.history %}
+          <li>
+            <a href="{{ url_for('view_history', index=loop.index0) }}">
+              {{ item.prediction }}
+              {% if 'probability' in item and item.probability is number %}
+                ({{ "%.0f"|format(item.probability * 100) }}%)
+              {% endif %}
+            </a>
+          </li>
+        {% endfor %}
+      </ul>
+      <form action="{{ url_for('clear_history') }}" method="post">
+        <button type="submit" class="clear-btn">Clear</button>
+      </form>
+    {% else %}
+      <p>No history yet.</p>
+    {% endif %}
+  </aside>
+
+  <main class="content">
+    {% block content %}{% endblock %}
+  </main>
+</div>
+</body>
+</html>
